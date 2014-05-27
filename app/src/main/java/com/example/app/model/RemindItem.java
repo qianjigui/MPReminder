@@ -27,6 +27,14 @@ public class RemindItem {
     private String note;
     private long create_at,update_at,finish_at;
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
     public RemindItem(String title, String note){
         _id = -1;
         this.title = title;
@@ -53,6 +61,10 @@ public class RemindItem {
 
     public boolean update(){
         return update(this);
+    }
+
+    public long getId(){
+        return this._id;
     }
 
     public static boolean insert(RemindItem item){

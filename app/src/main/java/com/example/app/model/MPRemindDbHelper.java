@@ -25,7 +25,7 @@ public class MPRemindDbHelper extends SQLiteOpenHelper {
                     RemindItem.RemindEntry.COLUMN_NAME_NOTE+TEXT_TYPE+COMMA_SEP+
                     RemindItem.RemindEntry.COLUMN_NAME_CREATE_AT+INTEGER_TYPE+COMMA_SEP+
                     RemindItem.RemindEntry.COLUMN_NAME_UPDATE_AT+INTEGER_TYPE+COMMA_SEP+
-                    RemindItem.RemindEntry.COLUMN_NAME_FINISH_AT+INTEGER_TYPE+COMMA_SEP;
+                    RemindItem.RemindEntry.COLUMN_NAME_FINISH_AT+INTEGER_TYPE+")";
 
     public static final String SQL_DELETE_REMIND_ENTRIES = "DROP TABLE IF EXISTS " + RemindItem.RemindEntry.TABLE_NAME;
 
