@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,11 +20,13 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 
 import com.example.app.model.MPRemindDbHelper;
 import com.example.app.model.RemindItem;
 import com.example.app.widget.AddReminderItemDialogFragment;
 import com.example.app.widget.RItemAdapter;
+import com.example.app.widget.ReminderItemDetailDialogFragment;
 
 import java.util.List;
 
@@ -47,7 +52,7 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -59,16 +64,10 @@ public class MainActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.action_add_item:
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                Fragment prev = getFragmentManager().findFragmentByTag("AddDialog");
-                if(prev!=null){
-                    ft.remove(prev);
-                }
-                ft.addToBackStack(null);
-                DialogFragment dialog = (DialogFragment) DialogFragment.instantiate(getApplicationContext(), AddReminderItemDialogFragment.class.getCanonicalName());
-                dialog.show(ft,"AddDialog");
+                DialogFragment dialog = new AddReminderItemDialogFragment();
+                dialog.show(getFragmentManager(),AddReminderItemDialogFragment.TAG_NAME_FOR_FRAGMENT);
                 return true;
             case R.id.action_settings:
                 return true;
@@ -84,7 +83,7 @@ public class MainActivity extends Activity {
 
         private BaseAdapter adapter;
 
-        public BaseAdapter getAdapter(){
+        public BaseAdapter getAdapter() {
             return this.adapter;
         }
 
@@ -94,7 +93,7 @@ public class MainActivity extends Activity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             adapter = new RItemAdapter(getActivity()
@@ -103,11 +102,13 @@ public class MainActivity extends Activity {
 
             ListView lv = (ListView) rootView.findViewById(R.id.reminderList);
             lv.setAdapter(adapter);
-            lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    RemindItem item = (RemindItem)adapter.getItem(position);
-                    return true;
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    view.animate().scaleX(1.25f).scaleY(1.25f);
+                    RemindItem item = (RemindItem) adapter.getItem(position);
+                    DialogFragment dialogFragment = new ReminderItemDetailDialogFragment(item, view);
+                    dialogFragment.show(getFragmentManager(), ReminderItemDetailDialogFragment.TAG_NAME_FOR_FRAGMENT);
                 }
             });
             return rootView;

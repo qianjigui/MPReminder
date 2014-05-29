@@ -6,6 +6,8 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 
@@ -17,6 +19,10 @@ import com.example.app.model.RemindItem;
  * Created by wpc on 5/26/14.
  */
 public class AddReminderItemDialogFragment extends DialogFragment {
+
+    public static final String TAG_NAME_FOR_FRAGMENT = "AddReminderItemDialogFragment";
+
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -45,4 +51,5 @@ public class AddReminderItemDialogFragment extends DialogFragment {
                 });
         return builder.create();
     }
+
 }
