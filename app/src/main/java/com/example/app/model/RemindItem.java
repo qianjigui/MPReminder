@@ -79,6 +79,7 @@ public class RemindItem {
         long newRowId;
         newRowId = db.insert(RemindEntry.TABLE_NAME, null, values);
         item._id = newRowId;
+        db.close();
         return item._id!=-1;
     }
 
@@ -126,6 +127,7 @@ public class RemindItem {
         String selection = RemindEntry._ID + " = ?";
         String[] selectArgs = {String.valueOf(item._id)};
         int count = db.update(RemindEntry.TABLE_NAME, values, selection, selectArgs);
+        db.close();
         return count==1;
     }
 }

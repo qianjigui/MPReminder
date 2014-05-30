@@ -2,6 +2,7 @@ package com.example.app.widget;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,16 @@ public class RItemAdapter extends BaseAdapter{
     @Override
     public void notifyDataSetChanged() {
         this.items = RemindItem.all();
+        if(items.size()==0){
+            String value = "abcdefghijklmnopqrst";
+            for(int i = 0;i<value.length();i++){
+                String title = value.substring(i,i+1);
+                String note  = title + "123456789012345678901234567890";
+                RemindItem item = new RemindItem(title,note);
+                item.save();
+            }
+        }
+        items = RemindItem.all();
         super.notifyDataSetChanged();
     }
 }

@@ -26,6 +26,7 @@ import com.example.app.model.MPRemindDbHelper;
 import com.example.app.model.RemindItem;
 import com.example.app.widget.AddReminderItemDialogFragment;
 import com.example.app.widget.RItemAdapter;
+import com.example.app.widget.RItemListFragment;
 import com.example.app.widget.ReminderItemDetailDialogFragment;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class MainActivity extends Activity {
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new RItemListFragment())
                     .commit();
         }
     }
@@ -74,46 +75,6 @@ public class MainActivity extends Activity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        private BaseAdapter adapter;
-
-        public BaseAdapter getAdapter() {
-            return this.adapter;
-        }
-
-        public PlaceholderFragment() {
-
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-            adapter = new RItemAdapter(getActivity()
-                    .getApplicationContext());
-            adapter.notifyDataSetChanged();
-
-            ListView lv = (ListView) rootView.findViewById(R.id.reminderList);
-            lv.setAdapter(adapter);
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    view.animate().scaleX(1.25f).scaleY(1.25f);
-                    RemindItem item = (RemindItem) adapter.getItem(position);
-                    DialogFragment dialogFragment = new ReminderItemDetailDialogFragment(item, view);
-                    dialogFragment.show(getFragmentManager(), ReminderItemDetailDialogFragment.TAG_NAME_FOR_FRAGMENT);
-                }
-            });
-            return rootView;
-        }
-
     }
 
 }

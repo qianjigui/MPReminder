@@ -3,6 +3,7 @@ package com.example.app.widget;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import android.widget.EditText;
 import com.example.app.MainActivity;
 import com.example.app.R;
 import com.example.app.model.RemindItem;
+
+import java.util.List;
 
 /**
  * Created by wpc on 5/26/14.
@@ -39,8 +42,9 @@ public class AddReminderItemDialogFragment extends DialogFragment {
                         RemindItem item = new RemindItem(title.getText().toString(),note.getText().toString());
                         item.save();
 
-                        MainActivity.PlaceholderFragment fragment = (MainActivity.PlaceholderFragment)getFragmentManager().findFragmentById(R.id.container);
-                        fragment.getAdapter().notifyDataSetChanged();
+                        ListFragment fragment = (RItemListFragment)(getFragmentManager().findFragmentById(R.id.container));
+                        BaseAdapter adapter = (BaseAdapter)fragment.getListAdapter();
+                        adapter.notifyDataSetChanged();
                     }
                 })
                 .setNegativeButton(R.string.cancel_button, new DialogInterface.OnClickListener() {
