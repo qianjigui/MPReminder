@@ -25,43 +25,20 @@ public class ReminderItemDetailDialogFragment extends DialogFragment {
     public static final String TAG_NAME_FOR_FRAGMENT = "ReminderItemDetailDialogFragment";
 
     private RemindItem item;
-    private int viewIndex;
+    private RItemAdapter adapter;
 
-    public ReminderItemDetailDialogFragment(RemindItem item,int viewIndex) {
-        this.item = item;
-        this.viewIndex = viewIndex;
+    public ReminderItemDetailDialogFragment() {
     }
 
-    public ReminderItemDetailDialogFragment(){
-    }
-
-    public View getRItemListItemViewByIndex(int index){
-        RItemListFragment fr = (RItemListFragment)getFragmentManager().findFragmentById(R.id.container);
-        View v = null;
-        if(fr!=null){
-            ListView lv = fr.getListView();
-            v = lv.getChildAt(index-lv.getFirstVisiblePosition());
-        }
-        return v;
-    }
-
-    public static final String CLICK_ITEM_POSITION_INDEX  = "CLICK_ITEM_POSITION_INDEX";
-
-    public int getItemViewIndex(){
-        return viewIndex;
-    }
+    public static final String CLICK_ITEM_POSITION_INDEX = "CLICK_ITEM_POSITION_INDEX";
 
     @Override
-
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        if(savedInstanceState!=null){
-            int i = savedInstanceState.getInt(CLICK_ITEM_POSITION_INDEX);
-            if(item==null){
-                viewIndex = i;
-                RItemListFragment fr = (RItemListFragment)getFragmentManager().findFragmentById(R.id.container);
-                item = (RemindItem)fr.getListAdapter().getItem(i);
-            }
-        }
+
+        RItemListFragment fr = (RItemListFragment) getFragmentManager().findFragmentById(R.id.container);
+        adapter = (RItemAdapter) fr.getListAdapter();
+        item = (RemindItem) adapter.getClickedItem();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
@@ -73,18 +50,10 @@ public class ReminderItemDetailDialogFragment extends DialogFragment {
                 .setNegativeButton(R.string.cancel_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        View v = getRItemListItemViewByIndex(viewIndex);
-                        if(v!=null){
-                            v.animate().scaleX(1f).scaleY(1f);
-                        }
+                        adapter.clearClick();
                     }
                 });
         return builder.create();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(CLICK_ITEM_POSITION_INDEX, viewIndex);
-    }
 }

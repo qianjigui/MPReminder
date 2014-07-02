@@ -24,8 +24,23 @@ public class RItemAdapter extends BaseAdapter{
     public RItemAdapter(Context context) {
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        clickedIndex = -1;
     }
 
+    private int clickedIndex;
+
+    public void toClickIndex(int index){
+        clickedIndex = index;
+    }
+
+    public void clearClick(){
+        clickedIndex = -1;
+    }
+
+    public Object getClickedItem()
+    {
+        return getItem(clickedIndex);
+    }
     @Override
     public int getCount() {
         return items.size();
@@ -47,6 +62,7 @@ public class RItemAdapter extends BaseAdapter{
         if(vi==null){
             vi = inflater.inflate(R.layout.ritem_row, null);
         }
+
         RemindItem item = (RemindItem) getItem(position);
         TextView tvTitleTV = (TextView) vi.findViewById(R.id.riTitleTV);
         TextView tvNoteTV = (TextView) vi.findViewById(R.id.riNoteTV);
